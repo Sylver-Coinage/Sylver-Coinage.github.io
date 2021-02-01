@@ -1,0 +1,11 @@
+* pages
+** TODO index
+** TODO about
+** TODO 404
+* assets
+** TODO css
+*** TODO screen-sizes
+*** TODO style
+** TODO favicon
+** TODO img
+** TODO js

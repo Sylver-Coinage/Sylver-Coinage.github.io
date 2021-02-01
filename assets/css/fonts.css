@@ -1,0 +1,15 @@
+:root {
+  --white: #ffffff;
+  --grey: #f3f4f5;
+  --black: #1c1b1b;
+}
+
+@font-face {
+  font-family: 'CMT';
+  src: url(../fonts/cm-type.ttf.ttf);
+}
+
+@font-face {
+  font-family: 'CMTI';
+  src: url(../fonts/cm-type-it.ttf);
+}
