@@ -3,9 +3,9 @@
 ** TODO about
 ** TODO 404
 * assets
-** TODO css
-*** TODO screen-sizes
-*** TODO style
+** DONE css
+*** DONE screen-sizes
+*** DONE style
 ** TODO favicon
 ** TODO img
 ** TODO js

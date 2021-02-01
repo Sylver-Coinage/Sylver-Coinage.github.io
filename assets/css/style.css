@@ -16,6 +16,15 @@ h3 { font-family: 'CMT' }
 h4 { font-family: 'CMTI' }
 p  { font-family: 'CMT' }
 
+button {
+    font-family: 'CMT';
+    padding: .2em .75em;
+    border: none;
+    background-color: white;
+}
+button:hover { text-decoration: underline }
+button:focus { text-decoration: underline; outline: none }
+
 a:hover { text-decoration: none; color: inherit }
 a { color: black; font-size: inherit }
 

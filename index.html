@@ -6,27 +6,70 @@ permalink: /
 
 
 <!-- header -->
-<div class="container-fluid" style="background-color:var(--white); padding-left: 10vw; padding-right:10vw">
-      <div class="row" style="padding-top: 10em">
+<div class="container-fluid" style="background-color:var(--white); padding-left: 10vw; padding-right: 10vw; height: 100%">
+      <div class="row" style="padding-top: 2em">
         <div class="col">
-          <h1 style="padding-bottom:.5em">Welcome to the Sylver <span class="avoid-wrap">Coinage Browser Game.</span></h1>
-          <h2>Invented by John H. Conway in honour of James J. Sylvester, this deceptively simple game is still not completely solved! The computer has been programmed to play semi-optimally, see if you can beat it! <br><br> The rules: </h2>
-        </div>
-      </div>
-      <div class="row">
-	<div class="col">
-          <input type="tel" id="numInput">
-	  <button onClick="sentInfo()">go!</button>
+          <h1>
+	    Welcome to the Sylver Coinage
+	    <span class="avoid-wrap">Browser Game.</span>
+	  </h1>
+	  <button autofocus id="rulesBtn" style="padding-left:0" onClick="swapToAbt()">Rules/About</button>
+	  <button id="playBtn" onClick="swapToGame()">Play</button>
+	  <hr style="margin: .5em 0em 1em; border-top: 2px solid black">
 	</div>
       </div>
-</div>
 
-<h1 id="disp"></h1>
+      <div id="abt" class="row" style="display:block; padding-bottom: 3em">
+	<div class="col">
+	  <h2>Invented by John H. Conway, this deceptively simple
+	    game is still not completely solved. The computer has
+	    been programmed to play semi-optimally, see if you can
+	    beat it! <br><br>
+	    
+	    <u>The rules:</u><br>
+	    Player 1 names a positive integer, then players take
+	    turns naming positive integers that cannot be
+	    expressed as a sum of previously named integers.
+	    The first player who cannot do so loses. <br><br>
+
+	    This website and game were built by Liam Chung for
+	    MATH180 (Art of Mathematics) taught by Sid Trudeau,
+	    at McGill University.
+	  </h2>
+	</div>
+      </div>
+
+      <div id="game" class="row" style="display:none; padding-bottom: 2em">
+	<div class="col">
+	  <h2>This is the game</h2>
+	  <input type="tel" id="numInput">
+	  <button onClick="sentInfo()">go!</button>
+	  <h1 id="disp"></h1>
+	</div>
+ </div>
+
+
+
+
 
 <script>
+  console.log("hi");
+
+  function swapToAbt() {
+      document.getElementById("abt").style.display = "block";
+      document.getElementById("game").style.display = "none";
+  }
+
+  function swapToGame() {
+      document.getElementById("abt").style.display = "none";
+      document.getElementById("game").style.display = "block";
+  }
+  
+
   function sentInfo () {
       document.getElementById("disp").innerHTML = document.getElementById("numInput").value;
   }
+
 </script>
   
 
