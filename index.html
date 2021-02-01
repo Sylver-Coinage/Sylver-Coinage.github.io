@@ -1,0 +1,35 @@
+---
+layout: "wrapper"
+title: Home
+permalink: /
+---
+
+
+<!-- header -->
+<div class="container-fluid" style="background-color:var(--white); padding-left: 10vw; padding-right:10vw">
+      <div class="row" style="padding-top: 10em">
+        <div class="col">
+          <h1 style="padding-bottom:.5em">Welcome to the Sylver <span class="avoid-wrap">Coinage Browser Game.</span></h1>
+          <h2>Invented by John H. Conway in honour of James J. Sylvester, this deceptively simple game is still not completely solved! The computer has been programmed to play semi-optimally, see if you can beat it! <br><br> The rules: </h2>
+        </div>
+      </div>
+      <div class="row">
+	<div class="col">
+          <input type="number" id="numInput">
+	  <button onClick="sentInfo()">go!</button>
+	</div>
+      </div>
+</div>
+
+<h1 id="disp"></h1>
+
+<script>
+  function sentInfo () {
+      document.getElementById("disp").innerHTML = document.getElementById("numInput").value;
+  }
+</script>
+  
+
+<style>
+
+</style>
