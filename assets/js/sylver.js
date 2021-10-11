@@ -10,8 +10,8 @@ function cStart() {
   move = primes[Math.floor(Math.random()*primes.length)];
   // add it to the picked list
   picked.push(move);
-  // call loop for player
-  loop(-1);
+  // terminate. this leaves it for the player to respond
+  // loop(-1);
 }
 
 // done. needs to take input from user, then make the corrseponding correct opening move then launch to player move loop
@@ -38,37 +38,18 @@ function pStart() {
   }
   // add to list of picked moves
   picked.push(move);
-  // call loop for player
-  loop(-1);
+
+  // terminate. this leaves it for the player to respond
+  // loop(-1);
 }
 
-// not done
-function loop (curPlayer) {
-    if(curPlayer == 1) move = compMove();
-    else move = playerMove();
+// the player has given new input. give to newnum, then process a response
+function playerMove(move) {
+  // check to make sure the move is legal (in rem list)
 
-    newNum(move);
 
-    if(overCheck()) gameOver();
-    else loop(curPlayer * -1);
-}
-
-// not started
-function compMove() {
-    // figure out next number to play
-    // return that number
-}
-
-// not started
-function playerMove() {
-    // take input for player
-    // return that number
-}
-
-// done. just needs to check rem
-function overCheck() {
-    if(rem.length == 0) return true;
-    else return false;
+  newNum(move);
+  // now process a response
 }
 
 // still needs to show the new move
@@ -77,13 +58,14 @@ function newNum (move) {
     picked.push(move);
 
     // display the move
+    document.getElementById("disp").innerHTML = document.getElementById("disp").value.concat(", ", move);
 
     // check new move against all prior moves checking for relative primeness
     // may want to do this in a temp to preserve the actual order played but i dont think its necessary
     picked.sort();
     newcap = 0;
     picked.forEach(function(prev){
-      if(isPrime(move, prev)) {
+      if(areCoprimes(move, prev)) {
         newcap = (move - 1) * (prev - 1) - 1;
         break;
        }
