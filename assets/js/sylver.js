@@ -1,6 +1,6 @@
 var curcap; // current highest number that can be picked
+var newcap; // new highest number that can be picked to be checked against curcap
 var rem, picked; // remaining available and picked lists
-var low1, low2; // two lowest values that determine the lower cap on pickable numbers
 var move; // holds current move
 const primes = [5, 7, 11, 13, 17, 19, 23, 29, 31]; // a list of all primes from 5 to 31
 
@@ -8,8 +8,8 @@ const primes = [5, 7, 11, 13, 17, 19, 23, 29, 31]; // a list of all primes from 
 function cStart() {
   // pick random low prime to set as move
   move = primes[Math.floor(Math.random()*primes.length)];
-  // call newnum on it
-  newNum(move);
+  // add it to the picked list
+  picked.push(move);
   // call loop for player
   loop(-1);
 }
@@ -19,7 +19,7 @@ function pStart() {
   // call player move
   move = playerMove();
   // call newnum
-  newNum(move);
+  picked.push(move);
   // c react switch
   if(isPrime(move)){
     // if 2^n3^m then 5
@@ -27,16 +27,17 @@ function pStart() {
   }
   else switch(move) {
     case 2:
-      // return 3
+      // return 3, game over
       break;
     case 3:
-      // return 2
+      // return 2, game over
       break;
     default:
       // return product of the next two primes
+      // they'll be rel prime so determine cap from this
   }
-  // call newnum on it
-  newNum(move);
+  // add to list of picked moves
+  picked.push(move);
   // call loop for player
   loop(-1);
 }
@@ -52,11 +53,13 @@ function loop (curPlayer) {
     else loop(curPlayer * -1);
 }
 
+// not started
 function compMove() {
     // figure out next number to play
     // return that number
 }
 
+// not started
 function playerMove() {
     // take input for player
     // return that number
@@ -76,19 +79,37 @@ function newNum (move) {
     // display the move
 
     // check new move against all prior moves checking for relative primeness
+    // may want to do this in a temp to preserve the actual order played but i dont think its necessary
+    picked.sort();
+    newcap = 0;
+    picked.forEach(function(prev){
+      if(isPrime(move, prev)) {
+        newcap = (move - 1) * (prev - 1) - 1;
+        break;
+       }
+    })
+    // if the new cap is lower than the previous one, lower the cap
+    if(newcap != 0 && newcap < curcap) curcap = newcap;
 
-    if(move < low1) low1 = move;
-    else if (move < low2) low2 = move;
-    curcap = low1 * low2;
-
+    // now to determine the new list of remaining moves.
     for (i = 1; i*move < curcap; i++) {
 
     }
     checkAdds(move);
 }
 
+// not sure what this is for yet
 function checkAdds (move) {
     // check all additions of new num against the remaining list of options
+}
+
+// game over
+function gameOver (winner) {
+  if(winner == 1) { // the computer won
+  }
+  else { // the player won
+
+  }
 }
 
 // checks if the number is prime
