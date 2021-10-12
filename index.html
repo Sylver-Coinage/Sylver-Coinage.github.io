@@ -50,9 +50,10 @@ permalink: /
        <div class="col" id="play" style="display:none">
          <h2>Good luck, and feel free to switch back to the rules at any time! It will preserve your progress.</h2>
          <input type="tel" id="numInput">
-         <button onClick="move()">make move</button>
+         <button id="move" onClick="move()">make move</button>
          <h1 style="margin: 25px 0" id="disp"></h1>
-         <button onClick="startOver()">start over</button>
+         <h1 style="margin: 25px 0; color: red" id="winner"></h1>
+         <button id="startover" onClick="startOver()">start over</button>
        </div>
     </div>
 </div>
@@ -86,6 +87,8 @@ permalink: /
     // bring us back to selec menu
     document.getElementById("play").style.display = "none";
     document.getElementById("selec").style.display = "block";
+    // re-enable move button
+    document.getElementById("move").disabled = false;
     // clear all variables and lists
   }
 
