@@ -9,3 +9,13 @@
 ** TODO favicon
 ** TODO img
 ** TODO js
+
+
+
+TODO:
+game over
+  declare victor
+  display button to call start over
+start over clear vars
+change call of make move
+restructure pstart

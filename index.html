@@ -21,16 +21,17 @@ permalink: /
 
       <div id="abt" class="row" style="display:block; padding-bottom: 3em">
       	<div class="col">
-      	  <h2>Invented by John H. Conway, this deceptively simple
-      	    game is still not completely solved. The computer has
-      	    been programmed to play semi-optimally, see if you can
-      	    beat it! <br><br>
-
+      	  <h2>
       	    <u>The rules:</u><br>
       	    Player 1 names a positive integer, then players take
       	    turns naming positive integers that cannot be
       	    expressed as a sum of previously named integers.
       	    The first player who cannot do so loses. <br><br>
+
+            Invented by John H. Conway, this deceptively simple
+      	    game is still not completely solved. The computer has
+      	    been programmed to play semi-optimally, see if you can
+      	    beat it! <br><br>
 
       	    This website and game were built by Liam Chung for
       	    MATH180 (Art of Mathematics) taught by Sid Trudeau,
@@ -42,14 +43,14 @@ permalink: /
      <div id="game" class="row" style="display:none; padding-bottom: 2em">
        <div class="col" id="selec" style="display:block">
          <h2>Will you go first, or let the computer go first?</h2>
-         <button onClick="start(-1)">I will go first</button><br>
+         <button onClick="start(-1)">I will go first</button>
          <button onClick="start(1)">The computer can go first</button>
        </div>
 
        <div class="col" id="play" style="display:none">
          <h2>Good luck, and feel free to switch back to the rules at any time! It will preserve your progress.</h2>
          <input type="tel" id="numInput">
-         <button onClick="sentInfo()">make move</button>
+         <button onClick="move()">make move</button>
          <h1 style="margin: 25px 0" id="disp"></h1>
          <button onClick="startOver()">start over</button>
        </div>
@@ -60,6 +61,7 @@ permalink: /
 <script>
   console.log("hi");
 
+  // done. just for swapping between the tabs
   function swapToAbt() {
       document.getElementById("abt").style.display = "block";
       document.getElementById("game").style.display = "none";
@@ -69,24 +71,21 @@ permalink: /
       document.getElementById("game").style.display = "block";
   }
 
+  // done. swaps to game and
   function start(choice){
     document.getElementById("selec").style.display = "none";
     document.getElementById("play").style.display = "block";
-    if(choice == 1) { //computer first
-      cStart();
-    }
-    else { //player first
-      pStart();
-    }
+    if(choice == 1) cStart();
   }
 
-  function sentInfo () {
-      if(document.getElementById("disp").innerHTML == '') document.getElementById("disp").innerHTML = document.getElementById("numInput").value;
-      else document.getElementById("disp").innerHTML = document.getElementById("disp").innerHTML.concat(", ", document.getElementById("numInput").value);
+  function move () {
+    playerMove(document.getElementById("numInput").value);
   }
 
   function startOver() {
     // bring us back to selec menu
+    document.getElementById("play").style.display = "none";
+    document.getElementById("selec").style.display = "block";
     // clear all variables and lists
   }
 

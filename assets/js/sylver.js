@@ -15,10 +15,10 @@ function cStart() {
 }
 
 // done. needs to take input from user, then make the corrseponding correct opening move then launch to player move loop
-function pStart() {
-  // call player move
-  move = playerMove();
-  // call newnum
+function pStart(move) {
+  // is the move legal? greater than 1, an integer, etc?
+
+  // add to picked list
   picked.push(move);
   // c react switch
   if(isPrime(move)){
@@ -45,20 +45,24 @@ function pStart() {
 
 // the player has given new input. give to newnum, then process a response
 function playerMove(move) {
-  // check to make sure the move is legal (in rem list)
+  // is this the first move?
+  if(picked.length == 0) pStart(move);
+  else {
+    // check to make sure the move is legal (in rem list)
 
 
-  newNum(move);
-  // now process a response
+    newNum(move);
+    // now process a response
+  }
 }
 
-// still needs to show the new move
+// not done. adds the move, displays it, and calculates new cap. needs to calculate new rem
 function newNum (move) {
-    // add the new move to the list
+5    // add the new move to the list
     picked.push(move);
 
     // display the move
-    document.getElementById("disp").innerHTML = document.getElementById("disp").value.concat(", ", move);
+    display(move);
 
     // check new move against all prior moves checking for relative primeness
     // may want to do this in a temp to preserve the actual order played but i dont think its necessary
@@ -74,11 +78,7 @@ function newNum (move) {
     if(newcap != 0 && newcap < curcap) curcap = newcap;
 
     // now to determine the new list of remaining moves.
-    for (i = 1; i*move < curcap; i++) {
 
-    }
-    checkAdds(move);
-}
 
 // not sure what this is for yet
 function checkAdds (move) {
@@ -110,4 +110,9 @@ function areCoprimes(num1, num2) {
       if(condition1 && condition2) return false;
    }
    return true;
+}
+
+function display(move) {
+  if(document.getElementById("disp").innerHTML == '') document.getElementById("disp").innerHTML = move;
+  else document.getElementById("disp").innerHTML = document.getElementById("disp").innerHTML.concat(", ", move);
 }
