@@ -1,8 +1,42 @@
 var curcap; // current highest number that can be picked
 var newcap; // new highest number that can be picked to be checked against curcap
-var rem, picked; // remaining available and picked lists
+var rem = [];
+var picked = []; // remaining available and picked lists
 var move; // holds current move
 const primes = [5, 7, 11, 13, 17, 19, 23, 29, 31]; // a list of all primes from 5 to 31
+
+
+// done. just for swapping between the tabs
+function swapToAbt() {
+    document.getElementById("abt").style.display = "block";
+    document.getElementById("game").style.display = "none";
+}
+function swapToGame() {
+    document.getElementById("abt").style.display = "none";
+    document.getElementById("game").style.display = "block";
+}
+
+// done. swaps to game and
+function start(choice){
+  document.getElementById("selec").style.display = "none";
+  document.getElementById("play").style.display = "block";
+  if(choice == 1) cStart();
+}
+
+function moveWrap () {
+  playerMove(Number(document.getElementById("numInput").value));
+}
+
+function startOver() {
+  // bring us back to selec menu
+  document.getElementById("play").style.display = "none";
+  document.getElementById("selec").style.display = "block";
+  // re-enable move button
+  document.getElementById("move").disabled = false;
+  // clear all variables and lists
+}
+
+
 
 // just outputs a random prime from 5 to 31 and display
 function cStart() {
@@ -20,7 +54,10 @@ function cStart() {
 // 4 -------- unclear what happens in other composite case about curcap
 function pStart(move) {
   // is the move legal? greater than 1, an integer, etc?
-  if(!isInteger(move) || move < 2) inputErr();
+  if(!Number.isInteger(move)) {console.log("notint");}
+  if(move < 2) {console.log("too small");}
+  if(!Number.isInteger(move) || move < 2) {inputErr();return;}
+  else document.getElementById("winner").innerHTML = "";
 
   // add to picked list
   picked.push(move);
@@ -67,7 +104,9 @@ function playerMove(move) {
   else {
     if(picked.length == 1) {       // is it the third move, ie the comp went first?
       // check to make sure the move is legal (integer geq 1 and not the num that was already played)
-      if(!isInteger(move) || move < 2 || move == picked[0]) inputErr();
+      if(!Number.isInteger(move) || move < 2 || move == picked[0]) {inputErr();return;}
+      else document.getElementById("winner").innerHTML = "";
+
       newNum(move);
       // need to prioritize ending the game. pick a rel prime to one of those picked
       // ---------- figure out a response
@@ -94,12 +133,11 @@ function newNum (move) {
     // may want to do this in a temp to preserve the actual order played but i dont think its necessary
     picked.sort();
     newcap = 0;
-    picked.forEach(function(prev){
-      if(areCoprimes(move, prev)) {
-        newcap = (move - 1) * (prev - 1) - 1;
-        break;
-       }
-    })
+    var i = 0;
+    while( i < picked.length && newcap == 0){
+      if(areCoprimes(move, picked[i])) newcap = (move - 1) * (picked[i] - 1) - 1;
+      i++;
+    }
     // if the new cap is lower than the previous one, lower the cap
     if(newcap != 0 && newcap < curcap) curcap = newcap;
 
@@ -109,7 +147,7 @@ function newNum (move) {
 
 // game over
 function gameOver (w) {
-  const winner;
+  var winner;
   if(w == 1) winner = "The computer has won. Better luck next time!";
   else winner = "You have won. Congratulations!"
   document.getElementById("winner").innerHTML = winner;
@@ -172,4 +210,9 @@ function primeFactors(n) {
     }
   }
   return factors;
+}
+
+// gives input error
+function inputErr(){
+  document.getElementById("winner").innerHTML = "Input error. Make sure you are choosing a positive integer greater than 1 that has not yet been picked, and is not the sum of multiples of any picked numbers.";
 }

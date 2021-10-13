@@ -3,7 +3,7 @@ layout: "wrapper"
 title: Home
 permalink: /
 ---
-
+<script src="./assets/js/sylver.js"></script>
 
 <!-- header -->
 <div class="container-fluid" style="background-color:var(--white); padding-left: 10vw; padding-right: 10vw; height: 100%">
@@ -50,7 +50,7 @@ permalink: /
        <div class="col" id="play" style="display:none">
          <h2>Good luck, and feel free to switch back to the rules at any time! It will preserve your progress.</h2>
          <input type="tel" id="numInput">
-         <button id="move" onClick="move()">make move</button>
+         <button id="move" onClick="moveWrap()">make move</button>
          <h1 style="margin: 25px 0" id="disp"></h1>
          <h1 style="margin: 25px 0; color: red" id="winner"></h1>
          <button id="startover" onClick="startOver()">start over</button>
@@ -58,38 +58,6 @@ permalink: /
     </div>
 </div>
 
-
 <script>
-  console.log("hi");
-
-  // done. just for swapping between the tabs
-  function swapToAbt() {
-      document.getElementById("abt").style.display = "block";
-      document.getElementById("game").style.display = "none";
-  }
-  function swapToGame() {
-      document.getElementById("abt").style.display = "none";
-      document.getElementById("game").style.display = "block";
-  }
-
-  // done. swaps to game and
-  function start(choice){
-    document.getElementById("selec").style.display = "none";
-    document.getElementById("play").style.display = "block";
-    if(choice == 1) cStart();
-  }
-
-  function move () {
-    playerMove(document.getElementById("numInput").value);
-  }
-
-  function startOver() {
-    // bring us back to selec menu
-    document.getElementById("play").style.display = "none";
-    document.getElementById("selec").style.display = "block";
-    // re-enable move button
-    document.getElementById("move").disabled = false;
-    // clear all variables and lists
-  }
-
+console.log(3 < 2)  
 </script>
