@@ -128,9 +128,9 @@ function playerMove(move) {
     }
     else {    // nah, some other move, so rem is now finite and we can go for ender/non-ender play
       // check to make sure the move is legal (in rem list)
-      // ---------- check rem list
-      console.log("check rem list");
+      if(!rem.includes(move)) {inputErr();return;}
       newNum(move);
+      if(rem.length == 0) {gameOver(-1);return;}
       // ---------- figure out a response
       console.log("figure out some response between ender and other");
 
