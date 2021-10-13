@@ -8,6 +8,8 @@ const primes = [5]; // a list of all primes from 5 to 31
 var newAdds = [];
 var result = [];
 
+var temprem = [];
+
 var dumbcount = 0;
 
 
@@ -63,7 +65,6 @@ function cStart() {
 }
 
 // processes the player's input and makes an initial response
-// 4 -------- unclear what happens in other composite case about curcap
 function pStart(move) {
   // is the move legal? greater than 1, an integer, etc?
   if(!Number.isInteger(move)) {console.log("notint");}
@@ -82,8 +83,7 @@ function pStart(move) {
     if(compCheck(move)) newNum(5);
     else { // if other composite, play one its primes geq 5
       var pfactors = primeFactors(move);
-      newNum(pfactors[0]);   // ------ what to do about curcap here?
-      console.log("unsure what to do with curcap");
+      newNum(pfactors[0]);
     }
   }
   else switch(move) {
@@ -116,24 +116,36 @@ function pStart(move) {
 function playerMove(move) {
   if(picked.length == 0) pStart(move);  // is this the first move?
   else {
-    if(picked.length == 1) {       // is it the third move, ie the comp went first?
+    if(picked.length == 1 && curcap == Infinity) {       // is it the third move, ie the comp went first?
       // check to make sure the move is legal (integer geq 1 and not the num that was already played)
       if(!Number.isInteger(move) || move < 2 || move == picked[0]) {inputErr();return;}
       else document.getElementById("winner").innerHTML = "";
 
       newNum(move);
       // need to prioritize ending the game. pick a rel prime to one of those picked
-      // ---------- figure out a response
-      console.log("needa figure out a response that will end the game and have an ender");
+      move = primes[Math.floor(Math.random()*primes.length)];
+      while(move != picked[0]) move = primes[Math.floor(Math.random()*primes.length)];
+      newNum(move);
+      if(rem.length == 0) {gameOver(1);return;}
+      // this could be better seems non optimal
     }
     else {    // nah, some other move, so rem is now finite and we can go for ender/non-ender play
       // check to make sure the move is legal (in rem list)
       if(!rem.includes(move)) {inputErr();return;}
       newNum(move);
       if(rem.length == 0) {gameOver(-1);return;}
-      // ---------- figure out a response
-      console.log("figure out some response between ender and other");
 
+      move = 0;
+      var tempMove = picked.slice();
+      tempMove.push(0);
+      for(var i = 0; i < rem.length && move == 0; i++) {
+        tempMove[tempMove.length-1] = rem[i];
+        if(linCombWrap(tempMove).length == 0) move = rem[i];
+      }
+      if(move == 0) move = rem[rem.length-1]; // stall by using ender
+
+      newNum(move);
+      if(rem.length == 0) {gameOver(1);return;}
     }
   }
 }
@@ -172,16 +184,22 @@ function newRem(move) {
 
   // get list of all linear combos of new picked list
   result = [];
+  temprem = [];
   result.length = Math.ceil(curcap/2); // want it to be half the max number
-  linComb(picked, picked.length, 0);
+  rem = linCombWrap(picked);
+}
+
+
+function linCombWrap(p){
+  linComb(p, p.length, 0);
 
   // get list of all numbers 2 to curcap
   // subtract former from latter
-  rem = [];
   for(var i = 2; i <= curcap; i++){
-    if(!newAdds.includes(i)) rem.push(i);
+    if(!newAdds.includes(i)) temprem.push(i);
   }
-  // this has set rem to be the new numbers
+
+  return temprem;
 }
 // recusively finds all combos of a certain length in an array
 function linComb(input, len, start) {
