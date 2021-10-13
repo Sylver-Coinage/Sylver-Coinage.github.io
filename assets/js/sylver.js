@@ -1,9 +1,14 @@
-var curcap; // current highest number that can be picked
+var curcap = Infinity; // current highest number that can be picked
 var newcap; // new highest number that can be picked to be checked against curcap
 var rem = [];
 var picked = []; // remaining available and picked lists
 var move; // holds current move
-const primes = [5, 7, 11, 13, 17, 19, 23, 29, 31]; // a list of all primes from 5 to 31
+// const primes = [5, 7, 11, 13, 17, 19, 23, 29, 31]; // a list of all primes from 5 to 31
+const primes = [5]; // a list of all primes from 5 to 31
+var newAdds = [];
+var result = [];
+
+var dumbcount = 0;
 
 
 // done. just for swapping between the tabs
@@ -15,18 +20,15 @@ function swapToGame() {
     document.getElementById("abt").style.display = "none";
     document.getElementById("game").style.display = "block";
 }
-
 // done. swaps to game and
 function start(choice){
   document.getElementById("selec").style.display = "none";
   document.getElementById("play").style.display = "block";
   if(choice == 1) cStart();
 }
-
 function moveWrap () {
   playerMove(Number(document.getElementById("numInput").value));
 }
-
 function startOver() {
   // bring us back to selec menu
   document.getElementById("play").style.display = "none";
@@ -34,6 +36,16 @@ function startOver() {
   // re-enable move button
   document.getElementById("move").disabled = false;
   // clear all variables and lists
+  document.getElementById("numInput").value = "";
+  document.getElementById("disp").innerHTML = "";
+  document.getElementById("winner").innerHTML = "";
+  curcap = Infinity;
+  rem = [];
+  picked = []; // remaining available and picked lists
+  newAdds = [];
+  result = [];
+  dumbcount = 0;
+
 }
 
 
@@ -71,6 +83,7 @@ function pStart(move) {
     else { // if other composite, play one its primes geq 5
       var pfactors = primeFactors(move);
       newNum(pfactors[0]);   // ------ what to do about curcap here?
+      console.log("unsure what to do with curcap");
     }
   }
   else switch(move) {
@@ -87,10 +100,11 @@ function pStart(move) {
     default:
       // move product of the next two primes
       var nexMove = nextPrimes(move)
-      picked.push(nexMove);
-      display(nexMove);
-      // they'll be rel prime so determine cap from this
-      curcap = (5 - 1) * (nexMove - 1) - 1;
+      newNum(nexMove);
+      // picked.push(nexMove);
+      // display(nexMove);
+      // // they'll be rel prime so determine cap from this
+      // curcap = (5 - 1) * (nexMove - 1) - 1;
   }
 
   // terminate. this leaves it for the player to respond
@@ -110,25 +124,22 @@ function playerMove(move) {
       newNum(move);
       // need to prioritize ending the game. pick a rel prime to one of those picked
       // ---------- figure out a response
+      console.log("needa figure out a response that will end the game and have an ender");
     }
     else {    // nah, some other move, so rem is now finite and we can go for ender/non-ender play
       // check to make sure the move is legal (in rem list)
       // ---------- check rem list
+      console.log("check rem list");
       newNum(move);
       // ---------- figure out a response
+      console.log("figure out some response between ender and other");
+
     }
   }
 }
 
 // adds the new move to the list, displays it, calculates the new cap, and calculates rem
-// 4 ---------- needs to calculate new rem
 function newNum (move) {
-    // add the new move to the list
-    picked.push(move);
-
-    // display the move
-    display(move);
-
     // check new move against all prior moves checking for relative primeness
     // may want to do this in a temp to preserve the actual order played but i dont think its necessary
     picked.sort();
@@ -141,8 +152,52 @@ function newNum (move) {
     // if the new cap is lower than the previous one, lower the cap
     if(newcap != 0 && newcap < curcap) curcap = newcap;
 
+    // add the new move to the list
+    picked.push(move);
+
+    // display the move
+    display(move);
+
     // now to determine the new list of remaining moves.
-    // ---------- determine rem
+    newRem(move);
+}
+
+function newRem(move) {
+  rem.sort();
+  var i = 0;
+  if(curcap != Infinity){
+    while(i < rem.length && rem[i] <= curcap) i++;
+    rem.length = i;
+  }
+
+  // get list of all linear combos of new picked list
+  result = [];
+  result.length = Math.ceil(curcap/2); // want it to be half the max number
+  linComb(picked, picked.length, 0);
+
+  // get list of all numbers 2 to curcap
+  // subtract former from latter
+  rem = [];
+  for(var i = 2; i <= curcap; i++){
+    if(!newAdds.includes(i)) rem.push(i);
+  }
+  // this has set rem to be the new numbers
+}
+// recusively finds all combos of a certain length in an array
+function linComb(input, len, start) {
+  if(len === 0) {
+    if(result.length == 0) return;
+    // add em all together into one num, check if its over curcap, if not, add it to newadds
+    var temp = result.reduce(add,0);
+    if(temp <= curcap && temp > 1) newAdds.push(temp);
+    return;
+  }
+  for (let i = start; i <= input.length; i++) {
+    if(len == 5 && dumbcount == 0) dumbcount++;
+    else if(len == 5 && dumbcount == 1) break;
+    result[result.length - len] = input[i];
+    linComb(input, len-1, i);
+  }
 }
 
 // game over
@@ -215,4 +270,9 @@ function primeFactors(n) {
 // gives input error
 function inputErr(){
   document.getElementById("winner").innerHTML = "Input error. Make sure you are choosing a positive integer greater than 1 that has not yet been picked, and is not the sum of multiples of any picked numbers.";
+}
+
+function add(accumulator, a) {
+    if(a === undefined) return accumulator;
+    else return accumulator + a;
 }
