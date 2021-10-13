@@ -3,8 +3,7 @@ var newcap; // new highest number that can be picked to be checked against curca
 var rem = [];
 var picked = []; // remaining available and picked lists
 var move; // holds current move
-// const primes = [5, 7, 11, 13, 17, 19, 23, 29, 31]; // a list of all primes from 5 to 31
-const primes = [5]; // a list of all primes from 5 to 31
+const primes = [5, 7, 11, 13, 17, 19, 23, 29, 31]; // a list of all primes from 5 to 31
 var newAdds = [];
 var result = [];
 
@@ -124,7 +123,7 @@ function playerMove(move) {
       newNum(move);
       // need to prioritize ending the game. pick a rel prime to one of those picked
       move = primes[Math.floor(Math.random()*primes.length)];
-      while(move == picked[0]) move = primes[Math.floor(Math.random()*primes.length)];
+      while(move == picked[0] || move == picked[1]) move = primes[Math.floor(Math.random()*primes.length)];
       newNum(move);
       if(rem.length == 0) {gameOver(1);return;}
       // this could be better seems non optimal
