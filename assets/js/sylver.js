@@ -129,6 +129,7 @@ function playerMove(move) {
       // this could be better seems non optimal
     }
     else {    // nah, some other move, so rem is now finite and we can go for ender/non-ender play
+      console.log("might we be infinite loopin?");
       // check to make sure the move is legal (in rem list)
       if(!rem.includes(move)) {inputErr();return;}
       newNum(move);
@@ -190,7 +191,7 @@ function newRem(move) {
 
 
 function linCombWrap(p){
-  linComb(p, p.length, 0);
+  linComb(p, p.length, 0, p.length);
 
   // get list of all numbers 2 to curcap
   // subtract former from latter
@@ -201,7 +202,7 @@ function linCombWrap(p){
   return temprem;
 }
 // recusively finds all combos of a certain length in an array
-function linComb(input, len, start) {
+function linComb(input, len, start, outer) {
   if(len === 0) {
     if(result.length == 0) return;
     // add em all together into one num, check if its over curcap, if not, add it to newadds
@@ -210,10 +211,10 @@ function linComb(input, len, start) {
     return;
   }
   for (let i = start; i <= input.length; i++) {
-    if(len == 5 && dumbcount == 0) dumbcount++;
-    else if(len == 5 && dumbcount == 1) break;
+    if(len == outer && dumbcount == 0) dumbcount++;
+    else if(len == outer && dumbcount == 1) break;
     result[result.length - len] = input[i];
-    linComb(input, len-1, i);
+    linComb(input, len-1, i, outer);
   }
 }
 

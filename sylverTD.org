@@ -1,7 +1,6 @@
 TODO:
 favicon
 
-disable input
 start over clear vars
 input error
 pstart composite curcap
